@@ -1,17 +1,5 @@
 @custom-variant dark (&:is(.dark *));
 
-html, body {
-  width: 100%;
-  overflow-x: hidden;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-
-
-
-
 :root {
   --font-size: 16px;
   --background: #ffffff;
