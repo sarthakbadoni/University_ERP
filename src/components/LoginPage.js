@@ -1,160 +1,69 @@
-import React, { useState } from 'react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Label } from './ui/label';
-import { AlertCircle, RefreshCw, Eye, EyeOff } from 'lucide-react';
+import React, { useState } from "react";
+import { Button } from "./ui/button"; // Named import for Button!
 
 export default function LoginPage({ onLogin }) {
-  const [studentId, setStudentId] = useState('');
-  const [password, setPassword] = useState('');
-  const [captcha, setCaptcha] = useState('');
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
+  const [captcha, setCaptcha] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [captchaText, setCaptchaText] = useState('ABC123');
+  const [captchaText, setCaptchaText] = useState(generateCaptcha());
   const [errors, setErrors] = useState({});
 
-  const generateCaptcha = () => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < 6; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    setCaptchaText(result);
-    setCaptcha('');
-  };
+  function generateCaptcha() {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let result = "";
+    for (let i = 0; i < 6; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+    return result;
+  }
+  const handleCaptchaRefresh = () => setCaptchaText(generateCaptcha());
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newErrors = {};
-
-    if (!studentId.trim()) {
-      newErrors.studentId = 'Student ID is required';
-    }
-    if (!password.trim()) {
-      newErrors.password = 'Password is required';
-    }
-    if (!captcha.trim()) {
-      newErrors.captcha = 'CAPTCHA is required';
-    } else if (captcha.toUpperCase() !== captchaText) {
-      newErrors.captcha = 'CAPTCHA is incorrect';
-    }
-
+    let newErrors = {};
+    if (!userId.trim()) newErrors.userId = "User ID is required";
+    if (!password.trim()) newErrors.password = "Password is required";
+    if (!captcha.trim()) newErrors.captcha = "CAPTCHA is required";
+    else if (captcha.toUpperCase() !== captchaText) newErrors.captcha = "Incorrect CAPTCHA";
     setErrors(newErrors);
+    if (Object.keys(newErrors).length) return;
 
-    if (Object.keys(newErrors).length === 0) {
-      onLogin(studentId);
-    }
+    // Demo role check: faculty starts with "FAC"
+    let type = userId.startsWith("FAC") ? "faculty" : "student";
+    onLogin({ type, data: { userId } });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center p-3 sm:p-4">
-      <Card className="w-full max-w-md bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-        <CardHeader className="text-center p-4 sm:p-6">
-          <CardTitle className="text-xl sm:text-2xl text-gray-900 dark:text-white">University ERP System</CardTitle>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">Student Portal Login</p>
-        </CardHeader>
-        <CardContent className="p-4 sm:p-6 pt-0">
-          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="studentId" className="text-gray-700 dark:text-gray-200">Student ID</Label>
-              <Input
-                id="studentId"
-                type="text"
-                placeholder="Enter your student ID"
-                value={studentId}
-                onChange={(e) => setStudentId(e.target.value)}
-                className={errors.studentId ? 'border-red-500' : ''}
-              />
-              {errors.studentId && (
-                <p className="text-sm text-red-500 flex items-center gap-1">
-                  <AlertCircle size={16} />
-                  {errors.studentId}
-                </p>
-              )}
-            </div>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-700 to-indigo-800 px-4">
+      <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg w-full max-w-sm p-6">
+        <h2 className="text-xl font-bold mb-3 text-blue-700">Login to University ERP</h2>
+        <label className="block mb-2 font-semibold">User ID</label>
+        <input type="text" value={userId} onChange={e => setUserId(e.target.value)}
+          className="w-full p-2 rounded mb-2 bg-blue-50" autoFocus />
+        {errors.userId && <div className="text-red-600 text-xs mb-1">{errors.userId}</div>}
 
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-700 dark:text-gray-200">Password</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={errors.password ? 'border-red-500' : ''}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="text-sm text-red-500 flex items-center gap-1">
-                  <AlertCircle size={16} />
-                  {errors.password}
-                </p>
-              )}
-            </div>
+        <label className="block mb-2 font-semibold">Password</label>
+        <div className="flex mb-2">
+          <input type={showPassword ? "text" : "password"} value={password}
+            onChange={e => setPassword(e.target.value)} className="w-full p-2 rounded-l bg-blue-50" />
+          <button type="button" className="p-2 bg-gray-200 rounded-r" onClick={() => setShowPassword(show => !show)}>
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+        {errors.password && <div className="text-red-600 text-xs mb-1">{errors.password}</div>}
 
-            <div className="space-y-2">
-              <Label htmlFor="captcha" className="text-gray-700 dark:text-gray-200">CAPTCHA</Label>
-              <div className="flex gap-2 items-center">
-                <div className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 p-3 rounded border border-gray-300 dark:border-gray-600 select-none text-lg tracking-wider font-mono">
-                  {captchaText}
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={generateCaptcha}
-                >
-                  <RefreshCw size={16} />
-                </Button>
-              </div>
-              <Input
-                id="captcha"
-                type="text"
-                placeholder="Enter CAPTCHA"
-                value={captcha}
-                onChange={(e) => setCaptcha(e.target.value)}
-                className={errors.captcha ? 'border-red-500' : ''}
-              />
-              {errors.captcha && (
-                <p className="text-sm text-red-500 flex items-center gap-1">
-                  <AlertCircle size={16} />
-                  {errors.captcha}
-                </p>
-              )}
-            </div>
+        <label className="block mb-2 font-semibold">CAPTCHA</label>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="bg-blue-200 font-mono px-2 py-1 rounded border text-blue-800">{captchaText}</span>
+          <button type="button" className="text-xs text-indigo-700 underline" onClick={handleCaptchaRefresh}>Refresh</button>
+        </div>
+        <input type="text" value={captcha} onChange={e => setCaptcha(e.target.value)}
+          className="w-full p-2 rounded mb-2 bg-blue-50" />
+        {errors.captcha && <div className="text-red-600 text-xs mb-1">{errors.captcha}</div>}
 
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
-
-            <div className="text-center space-y-2">
-              <button
-                type="button"
-                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                onClick={() => alert('Forgot Password functionality would be implemented here')}
-              >
-                Forgot Password?
-              </button>
-              <br />
-              <button
-                type="button"
-                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                onClick={() => alert('Forgot Student ID functionality would be implemented here')}
-              >
-                Forgot Student ID?
-              </button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+        <Button className="w-full bg-blue-700 text-white py-2 mt-2 rounded" type="submit">
+          Log In
+        </Button>
+      </form>
     </div>
   );
 }
