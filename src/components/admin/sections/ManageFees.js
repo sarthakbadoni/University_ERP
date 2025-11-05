@@ -1,24 +1,24 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Badge } from "../ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { Badge } from "../../ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
+} from "../../ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 import {
   Table,
   TableBody,
@@ -26,7 +26,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
+} from "../../ui/table";
 import {
   DollarSign,
   Plus,
@@ -369,24 +369,27 @@ export default function ManageFees({ onSectionChange }) {
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-3 bg-slate-700">
+            <TabsList className="grid w-full grid-cols-3 bg-slate-700/50 p-1 gap-1">
               <TabsTrigger
                 value="overview"
-                className="data-[state=active]:bg-slate-600 data-[state=active]:text-slate-100"
+                className="text-slate-400 data-[state=active]:bg-blue-600 data-[state=active]:text-white text-xs sm:text-sm whitespace-nowrap px-2"
               >
-                Student Payments
+                <span className="hidden sm:inline">Student Payments</span>
+                <span className="sm:hidden">Payments</span>
               </TabsTrigger>
               <TabsTrigger
                 value="structure"
-                className="data-[state=active]:bg-slate-600 data-[state=active]:text-slate-100"
+                className="text-slate-400 data-[state=active]:bg-blue-600 data-[state=active]:text-white text-xs sm:text-sm whitespace-nowrap px-2"
               >
-                Fee Structure
+                <span className="hidden sm:inline">Fee Structure</span>
+                <span className="sm:hidden">Structure</span>
               </TabsTrigger>
               <TabsTrigger
                 value="history"
-                className="data-[state=active]:bg-slate-600 data-[state=active]:text-slate-100"
+                className="text-slate-400 data-[state=active]:bg-blue-600 data-[state=active]:text-white text-xs sm:text-sm whitespace-nowrap px-2"
               >
-                Payment History
+                <span className="hidden sm:inline">Payment History</span>
+                <span className="sm:hidden">History</span>
               </TabsTrigger>
             </TabsList>
 
@@ -404,14 +407,15 @@ export default function ManageFees({ onSectionChange }) {
                 </div>
                 <Button
                   variant="outline"
-                  className="bg-slate-700 border-slate-600 text-slate-100 hover:bg-slate-600"
+                  className="hidden md:flex bg-slate-700 border-slate-600 text-slate-100 hover:bg-slate-600"
                 >
                   <Download className="h-4 w-4 mr-2" />
                   Export
                 </Button>
               </div>
 
-              <div className="rounded-lg border border-slate-700 overflow-x-auto">
+              {/* Desktop Table View */}
+              <div className="hidden md:block rounded-lg border border-slate-700 overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/50">
@@ -470,6 +474,61 @@ export default function ManageFees({ onSectionChange }) {
                   </TableBody>
                 </Table>
               </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden space-y-3">
+                {filteredPayments.map((payment) => (
+                  <div
+                    key={payment.id}
+                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex-1">
+                        <div className="text-slate-300 text-sm mb-1">Student ID</div>
+                        <div className="text-slate-100 font-medium">{payment.studentId}</div>
+                      </div>
+                      {getStatusBadge(payment.status)}
+                    </div>
+                    <div className="mb-3">
+                      <div className="text-slate-300 text-sm mb-1">Name</div>
+                      <div className="text-slate-100">{payment.studentName}</div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mb-3 text-sm">
+                      <div>
+                        <div className="text-slate-300 mb-1">Course</div>
+                        <div className="text-slate-100">{payment.course}</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-300 mb-1">Semester</div>
+                        <div className="text-slate-100">{payment.semester}</div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3 mb-3 text-sm">
+                      <div>
+                        <div className="text-slate-300 mb-1">Total Fee</div>
+                        <div className="text-slate-100">₹{payment.totalFee.toLocaleString()}</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-300 mb-1">Paid</div>
+                        <div className="text-green-400">₹{payment.paidAmount.toLocaleString()}</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-300 mb-1">Pending</div>
+                        <div className="text-red-400">₹{payment.pendingAmount.toLocaleString()}</div>
+                      </div>
+                    </div>
+                    {payment.status !== "Paid" && (
+                      <Button
+                        size="sm"
+                        onClick={() => openPaymentDialog(payment)}
+                        className="w-full bg-blue-600 hover:bg-blue-700"
+                      >
+                        Record Payment
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </div>
             </TabsContent>
 
             {/* Fee Structure Tab */}
@@ -480,7 +539,7 @@ export default function ManageFees({ onSectionChange }) {
                   onOpenChange={setIsAddFeeDialogOpen}
                 >
                   <DialogTrigger asChild>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
+                    <Button className="bg-blue-600 hover:bg-blue-700 w-full md:w-auto">
                       <Plus className="h-4 w-4 mr-2" />
                       Add Fee Structure
                     </Button>
@@ -610,7 +669,8 @@ export default function ManageFees({ onSectionChange }) {
                 </Dialog>
               </div>
 
-              <div className="rounded-lg border border-slate-700 overflow-x-auto">
+              {/* Desktop Table View */}
+              <div className="hidden md:block rounded-lg border border-slate-700 overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/50">
@@ -653,11 +713,51 @@ export default function ManageFees({ onSectionChange }) {
                   </TableBody>
                 </Table>
               </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden space-y-3">
+                {feeStructure.map((fee) => (
+                  <div
+                    key={fee.id}
+                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <div className="text-slate-100 font-medium text-lg">{fee.course}</div>
+                        <div className="text-slate-400 text-sm">Semester {fee.semester}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-slate-300 text-sm">Total</div>
+                        <div className="text-slate-100 font-medium">₹{fee.total.toLocaleString()}</div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div>
+                        <div className="text-slate-300 mb-1">Tuition Fee</div>
+                        <div className="text-slate-100">₹{fee.tuitionFee.toLocaleString()}</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-300 mb-1">Exam Fee</div>
+                        <div className="text-slate-100">₹{fee.examFee.toLocaleString()}</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-300 mb-1">Library Fee</div>
+                        <div className="text-slate-100">₹{fee.libraryFee.toLocaleString()}</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-300 mb-1">Other Fees</div>
+                        <div className="text-slate-100">₹{fee.otherFees.toLocaleString()}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </TabsContent>
 
             {/* Payment History Tab */}
             <TabsContent value="history" className="space-y-4 mt-4">
-              <div className="rounded-lg border border-slate-700 overflow-x-auto">
+              {/* Desktop Table View */}
+              <div className="hidden md:block rounded-lg border border-slate-700 overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/50">
@@ -701,6 +801,43 @@ export default function ManageFees({ onSectionChange }) {
                     ))}
                   </TableBody>
                 </Table>
+              </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden space-y-3">
+                {paymentHistory.map((payment) => (
+                  <div
+                    key={payment.id}
+                    className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex-1">
+                        <div className="text-slate-300 text-sm mb-1">Transaction ID</div>
+                        <div className="text-slate-100 font-medium">{payment.transactionId}</div>
+                      </div>
+                      <Badge className="bg-green-600">{payment.status}</Badge>
+                    </div>
+                    <div className="mb-2">
+                      <div className="text-slate-300 text-sm mb-1">Student</div>
+                      <div className="text-slate-100">{payment.studentName}</div>
+                      <div className="text-slate-400 text-sm">{payment.studentId}</div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mb-3 text-sm">
+                      <div>
+                        <div className="text-slate-300 mb-1">Amount</div>
+                        <div className="text-green-400">₹{payment.amount.toLocaleString()}</div>
+                      </div>
+                      <div>
+                        <div className="text-slate-300 mb-1">Date</div>
+                        <div className="text-slate-100">{payment.date}</div>
+                      </div>
+                    </div>
+                    <div className="text-sm">
+                      <div className="text-slate-300 mb-1">Payment Method</div>
+                      <div className="text-slate-100">{payment.paymentMethod}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </TabsContent>
           </Tabs>

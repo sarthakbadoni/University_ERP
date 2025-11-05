@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Badge } from "../ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { Badge } from "../../ui/badge";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
+} from "../../ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 import {
   Table,
   TableBody,
@@ -25,8 +25,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+} from "../../ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
 import { BookOpen, Plus, Edit, Trash2, ArrowLeft } from "lucide-react";
 import {
   AlertDialog,
@@ -37,7 +37,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "../ui/alert-dialog";
+} from "../../ui/alert-dialog";
 
 export default function ManageCourses({ onSectionChange }) {
   // Courses State
@@ -206,52 +206,54 @@ export default function ManageCourses({ onSectionChange }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full overflow-x-hidden">
       <Card className="bg-slate-800 border-slate-700">
-        <CardHeader>
+        <CardHeader className="px-4 sm:px-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {onSectionChange && (
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => onSectionChange("overview")}
-                  className="text-slate-400 hover:text-slate-100 hover:bg-slate-700"
+                  className="text-slate-400 hover:text-slate-100 hover:bg-slate-700 h-8 w-8 sm:h-10 sm:w-10"
                 >
-                  <ArrowLeft className="h-5 w-5" />
+                  <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               )}
-              <CardTitle className="flex items-center gap-2 text-blue-400">
-                <BookOpen className="h-6 w-6" />
-                Manage Courses & Programs
+              <CardTitle className="flex items-center gap-2 text-blue-400 text-sm sm:text-base">
+                <BookOpen className="h-5 w-5 sm:h-6 sm:w-6" />
+                <span className="hidden sm:inline">Manage Courses & Programs</span>
+                <span className="sm:hidden">Courses</span>
               </CardTitle>
             </div>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <Tabs defaultValue="courses" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-4 bg-slate-700">
-              <TabsTrigger value="courses" className="data-[state=active]:bg-slate-600 data-[state=active]:text-blue-400">
+            <TabsList className="grid w-full grid-cols-4 bg-slate-700/50 p-1 gap-0.5">
+              <TabsTrigger value="courses" className="text-slate-400 data-[state=active]:bg-blue-600 data-[state=active]:text-white text-[10px] sm:text-sm whitespace-nowrap px-1 sm:px-3">
                 Courses
               </TabsTrigger>
-              <TabsTrigger value="branches" className="data-[state=active]:bg-slate-600 data-[state=active]:text-blue-400">
+              <TabsTrigger value="branches" className="text-slate-400 data-[state=active]:bg-blue-600 data-[state=active]:text-white text-[10px] sm:text-sm whitespace-nowrap px-1 sm:px-3">
                 Branches
               </TabsTrigger>
-              <TabsTrigger value="specializations" className="data-[state=active]:bg-slate-600 data-[state=active]:text-blue-400">
-                Specializations
+              <TabsTrigger value="specializations" className="text-slate-400 data-[state=active]:bg-blue-600 data-[state=active]:text-white text-[10px] sm:text-sm whitespace-nowrap px-1 sm:px-3">
+                <span className="hidden md:inline">Specializations</span>
+                <span className="md:hidden">Specials</span>
               </TabsTrigger>
-              <TabsTrigger value="sections" className="data-[state=active]:bg-slate-600 data-[state=active]:text-blue-400">
+              <TabsTrigger value="sections" className="text-slate-400 data-[state=active]:bg-blue-600 data-[state=active]:text-white text-[10px] sm:text-sm whitespace-nowrap px-1 sm:px-3">
                 Sections
               </TabsTrigger>
             </TabsList>
 
             {/* Courses Tab */}
             <TabsContent value="courses" className="space-y-4">
-              <div className="flex justify-between items-center">
-                <p className="text-slate-400">Manage degree programs offered by the university</p>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
+                <p className="text-slate-400 text-xs sm:text-sm break-words">Manage degree programs offered by the university</p>
                 <Dialog open={isCourseDialogOpen} onOpenChange={setIsCourseDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
+                    <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto whitespace-nowrap shrink-0">
                       <Plus className="h-4 w-4 mr-2" />
                       Add Course
                     </Button>
@@ -299,7 +301,8 @@ export default function ManageCourses({ onSectionChange }) {
                 </Dialog>
               </div>
 
-              <div className="rounded-lg border border-slate-700 overflow-x-auto">
+              {/* Desktop Table View */}
+              <div className="hidden md:block rounded-lg border border-slate-700 overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/50">
@@ -350,15 +353,62 @@ export default function ManageCourses({ onSectionChange }) {
                   </TableBody>
                 </Table>
               </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden space-y-3">
+                {courses.map((course) => (
+                  <Card key={course.id} className="bg-slate-700/30 border-slate-600">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-start">
+                          <div className="space-y-1">
+                            <p className="text-slate-100">{course.name}</p>
+                            <p className="text-slate-400 text-sm">{course.duration}</p>
+                          </div>
+                          <Badge variant={course.status === "Active" ? "default" : "outline"}>
+                            {course.status}
+                          </Badge>
+                        </div>
+                        <div className="flex gap-2 pt-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 bg-blue-600/10 border-blue-600 text-blue-400 hover:bg-blue-600/20"
+                            onClick={() => {
+                              setEditingCourse({ ...course });
+                              setIsEditCourseDialogOpen(true);
+                            }}
+                          >
+                            <Edit className="h-3 w-3 mr-1" />
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 bg-red-600/10 border-red-600 text-red-400 hover:bg-red-600/20"
+                            onClick={() => {
+                              setDeleteItemId(course.id);
+                              setDeleteItemType("course");
+                            }}
+                          >
+                            <Trash2 className="h-3 w-3 mr-1" />
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </TabsContent>
 
             {/* Branches Tab */}
             <TabsContent value="branches" className="space-y-4">
-              <div className="flex justify-between items-center">
-                <p className="text-slate-400">Manage branches/departments for each course</p>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
+                <p className="text-slate-400 text-xs sm:text-sm break-words">Manage branches/departments for each course</p>
                 <Dialog open={isBranchDialogOpen} onOpenChange={setIsBranchDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
+                    <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto whitespace-nowrap shrink-0">
                       <Plus className="h-4 w-4 mr-2" />
                       Add Branch
                     </Button>
@@ -421,7 +471,8 @@ export default function ManageCourses({ onSectionChange }) {
                 </Dialog>
               </div>
 
-              <div className="rounded-lg border border-slate-700 overflow-x-auto">
+              {/* Desktop Table View */}
+              <div className="hidden md:block rounded-lg border border-slate-700 overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/50">
@@ -474,15 +525,62 @@ export default function ManageCourses({ onSectionChange }) {
                   </TableBody>
                 </Table>
               </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden space-y-3">
+                {branches.map((branch) => (
+                  <Card key={branch.id} className="bg-slate-700/30 border-slate-600">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-start">
+                          <div className="space-y-1">
+                            <p className="text-slate-100">{branch.name}</p>
+                            <p className="text-slate-400 text-sm">{branch.course} • {branch.code}</p>
+                          </div>
+                          <Badge variant={branch.status === "Active" ? "default" : "outline"}>
+                            {branch.status}
+                          </Badge>
+                        </div>
+                        <div className="flex gap-2 pt-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 bg-blue-600/10 border-blue-600 text-blue-400 hover:bg-blue-600/20"
+                            onClick={() => {
+                              setEditingBranch({ ...branch });
+                              setIsEditBranchDialogOpen(true);
+                            }}
+                          >
+                            <Edit className="h-3 w-3 mr-1" />
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 bg-red-600/10 border-red-600 text-red-400 hover:bg-red-600/20"
+                            onClick={() => {
+                              setDeleteItemId(branch.id);
+                              setDeleteItemType("branch");
+                            }}
+                          >
+                            <Trash2 className="h-3 w-3 mr-1" />
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </TabsContent>
 
             {/* Specializations Tab */}
             <TabsContent value="specializations" className="space-y-4">
-              <div className="flex justify-between items-center">
-                <p className="text-slate-400">Manage specializations within branches (AI/ML, Cyber Security, etc.)</p>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
+                <p className="text-slate-400 text-xs sm:text-sm break-words">Manage specializations within branches (AI/ML, Cyber Security, etc.)</p>
                 <Dialog open={isSpecializationDialogOpen} onOpenChange={setIsSpecializationDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
+                    <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto whitespace-nowrap shrink-0">
                       <Plus className="h-4 w-4 mr-2" />
                       Add Specialization
                     </Button>
@@ -555,7 +653,8 @@ export default function ManageCourses({ onSectionChange }) {
                 </Dialog>
               </div>
 
-              <div className="rounded-lg border border-slate-700 overflow-x-auto">
+              {/* Desktop Table View */}
+              <div className="hidden md:block rounded-lg border border-slate-700 overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/50">
@@ -608,15 +707,62 @@ export default function ManageCourses({ onSectionChange }) {
                   </TableBody>
                 </Table>
               </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden space-y-3">
+                {specializations.map((spec) => (
+                  <Card key={spec.id} className="bg-slate-700/30 border-slate-600">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-start">
+                          <div className="space-y-1">
+                            <p className="text-slate-100">{spec.name}</p>
+                            <p className="text-slate-400 text-sm">{spec.course} • {spec.branch}</p>
+                          </div>
+                          <Badge variant={spec.status === "Active" ? "default" : "outline"}>
+                            {spec.status}
+                          </Badge>
+                        </div>
+                        <div className="flex gap-2 pt-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 bg-blue-600/10 border-blue-600 text-blue-400 hover:bg-blue-600/20"
+                            onClick={() => {
+                              setEditingSpecialization({ ...spec });
+                              setIsEditSpecializationDialogOpen(true);
+                            }}
+                          >
+                            <Edit className="h-3 w-3 mr-1" />
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 bg-red-600/10 border-red-600 text-red-400 hover:bg-red-600/20"
+                            onClick={() => {
+                              setDeleteItemId(spec.id);
+                              setDeleteItemType("specialization");
+                            }}
+                          >
+                            <Trash2 className="h-3 w-3 mr-1" />
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </TabsContent>
 
             {/* Sections Tab */}
             <TabsContent value="sections" className="space-y-4">
-              <div className="flex justify-between items-center">
-                <p className="text-slate-400">Manage class sections (A, B, C, etc.)</p>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
+                <p className="text-slate-400 text-xs sm:text-sm break-words">Manage class sections (A, B, C, etc.)</p>
                 <Dialog open={isSectionDialogOpen} onOpenChange={setIsSectionDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
+                    <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto whitespace-nowrap shrink-0">
                       <Plus className="h-4 w-4 mr-2" />
                       Add Section
                     </Button>
@@ -665,7 +811,8 @@ export default function ManageCourses({ onSectionChange }) {
                 </Dialog>
               </div>
 
-              <div className="rounded-lg border border-slate-700 overflow-x-auto">
+              {/* Desktop Table View */}
+              <div className="hidden md:block rounded-lg border border-slate-700 overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/50">
@@ -715,6 +862,53 @@ export default function ManageCourses({ onSectionChange }) {
                     ))}
                   </TableBody>
                 </Table>
+              </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden space-y-3">
+                {sections.map((section) => (
+                  <Card key={section.id} className="bg-slate-700/30 border-slate-600">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-start">
+                          <div className="space-y-1">
+                            <p className="text-slate-100">Section {section.name}</p>
+                            <p className="text-slate-400 text-sm">Capacity: {section.capacity}</p>
+                          </div>
+                          <Badge variant={section.status === "Active" ? "default" : "outline"}>
+                            {section.status}
+                          </Badge>
+                        </div>
+                        <div className="flex gap-2 pt-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 bg-blue-600/10 border-blue-600 text-blue-400 hover:bg-blue-600/20"
+                            onClick={() => {
+                              setEditingSection({ ...section });
+                              setIsEditSectionDialogOpen(true);
+                            }}
+                          >
+                            <Edit className="h-3 w-3 mr-1" />
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 bg-red-600/10 border-red-600 text-red-400 hover:bg-red-600/20"
+                            onClick={() => {
+                              setDeleteItemId(section.id);
+                              setDeleteItemType("section");
+                            }}
+                          >
+                            <Trash2 className="h-3 w-3 mr-1" />
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </TabsContent>
           </Tabs>

@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Badge } from "../ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { Badge } from "../../ui/badge";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
+} from "../../ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 import {
   Table,
   TableBody,
@@ -25,7 +25,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
+} from "../../ui/table";
 import { Search, Plus, Edit, Trash2, Download, ArrowLeft } from "lucide-react";
 import {
   AlertDialog,
@@ -36,7 +36,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "../ui/alert-dialog";
+} from "../../ui/alert-dialog";
 
 export default function ManageFaculty({ onSectionChange }) {
   const [faculty, setFaculty] = useState([
@@ -344,15 +344,15 @@ export default function ManageFaculty({ onSectionChange }) {
             </Select>
             <Button
               variant="outline"
-              className="bg-slate-700 border-slate-600 text-slate-100 hover:bg-slate-600"
+              className="hidden md:flex bg-slate-700 border-slate-600 text-slate-100 hover:bg-slate-600"
             >
               <Download className="h-4 w-4 mr-2" />
               Export
             </Button>
           </div>
 
-          {/* Table */}
-          <div className="rounded-lg border border-slate-700 overflow-x-auto">
+          {/* Desktop Table View */}
+          <div className="hidden md:block rounded-lg border border-slate-700 overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/50">
@@ -415,6 +415,76 @@ export default function ManageFaculty({ onSectionChange }) {
                 ))}
               </TableBody>
             </Table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-3">
+            {filteredFaculty.map((fac) => (
+              <div
+                key={fac.id}
+                className="bg-slate-700/50 rounded-lg p-4 border border-slate-600"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex-1">
+                    <div className="text-slate-300 text-sm mb-1">Faculty ID</div>
+                    <div className="text-slate-100 font-medium">{fac.facultyId}</div>
+                  </div>
+                  <Badge
+                    variant={
+                      fac.status === "Active"
+                        ? "default"
+                        : fac.status === "On Leave"
+                          ? "secondary"
+                          : "outline"
+                    }
+                  >
+                    {fac.status}
+                  </Badge>
+                </div>
+                <div className="mb-2">
+                  <div className="text-slate-300 text-sm mb-1">Name</div>
+                  <div className="text-slate-100">{fac.name}</div>
+                </div>
+                <div className="mb-3">
+                  <div className="text-slate-300 text-sm mb-1">Email</div>
+                  <div className="text-slate-400 text-sm break-all">{fac.email}</div>
+                </div>
+                <div className="mb-3">
+                  <div className="text-slate-300 text-sm mb-1">Phone</div>
+                  <div className="text-slate-400 text-sm">{fac.phone}</div>
+                </div>
+                <div className="grid grid-cols-2 gap-3 mb-3 text-sm">
+                  <div>
+                    <div className="text-slate-300 mb-1">Department</div>
+                    <div className="text-slate-100 text-xs">{fac.department}</div>
+                  </div>
+                  <div>
+                    <div className="text-slate-300 mb-1">Designation</div>
+                    <div className="text-slate-100 text-xs">{fac.designation}</div>
+                  </div>
+                </div>
+                <div className="flex gap-2 pt-2 border-t border-slate-600">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="flex-1 text-blue-400 hover:text-blue-300 hover:bg-slate-700"
+                    onClick={() => openEditDialog(fac)}
+                  >
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="flex-1 text-red-400 hover:text-red-300 hover:bg-slate-700"
+                    onClick={() => setDeleteFacultyId(fac.id)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            ))}
           </div>
 
           <div className="text-sm text-slate-400">

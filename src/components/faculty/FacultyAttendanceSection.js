@@ -147,18 +147,18 @@ export default function FacultyAttendanceSection() {
     : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full overflow-x-hidden">
       <Card className="bg-slate-800 border-slate-700">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-blue-400">
-            <ClipboardCheck className="h-6 w-6" />
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="flex items-center gap-2 text-blue-400 text-base sm:text-lg">
+            <ClipboardCheck className="h-5 w-5 sm:h-6 sm:w-6" />
             Mark Attendance
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-4 gap-4">
+        <CardContent className="space-y-4 px-4 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             <div>
-              <label className="block text-sm mb-2 text-slate-300">
+              <label className="block text-xs sm:text-sm mb-2 text-slate-300">
                 Select Course
               </label>
               <Select value={selectedCourse} onValueChange={(value) => {
@@ -180,7 +180,7 @@ export default function FacultyAttendanceSection() {
             </div>
 
             <div>
-              <label className="block text-sm mb-2 text-slate-300">
+              <label className="block text-xs sm:text-sm mb-2 text-slate-300">
                 Select Semester
               </label>
               <Select 
@@ -205,7 +205,7 @@ export default function FacultyAttendanceSection() {
             </div>
 
             <div>
-              <label className="block text-sm mb-2 text-slate-300">
+              <label className="block text-xs sm:text-sm mb-2 text-slate-300">
                 Select Section
               </label>
               <Select 
@@ -227,7 +227,7 @@ export default function FacultyAttendanceSection() {
             </div>
 
             <div>
-              <label className="block text-sm mb-2 text-slate-300">
+              <label className="block text-xs sm:text-sm mb-2 text-slate-300">
                 Select Date
               </label>
               <div className="relative">
@@ -251,22 +251,22 @@ export default function FacultyAttendanceSection() {
 
           {selectedCourse && selectedSemester && selectedSection && (
             <>
-              <div className="bg-slate-700 p-4 rounded-lg border border-slate-600">
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <h3 className="text-slate-100 mb-1">
+              <div className="bg-slate-700 p-3 sm:p-4 rounded-lg border border-slate-600">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
+                  <div className="w-full sm:w-auto">
+                    <h3 className="text-slate-100 mb-2 text-sm sm:text-base break-words">
                       {selectedCourseData?.name}
                     </h3>
-                    <div className="flex items-center gap-2">
-                      <Badge className="bg-blue-600 hover:bg-blue-700">{selectedCourse}</Badge>
-                      <Badge variant="outline" className="border-slate-600 text-slate-300">{selectedSemesterData?.name}</Badge>
-                      <Badge variant="outline" className="border-slate-600 text-slate-300">{selectedSection}</Badge>
+                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                      <Badge className="bg-blue-600 hover:bg-blue-700 text-xs">{selectedCourse}</Badge>
+                      <Badge variant="outline" className="border-slate-600 text-slate-300 text-xs">{selectedSemesterData?.name}</Badge>
+                      <Badge variant="outline" className="border-slate-600 text-slate-300 text-xs">{selectedSection}</Badge>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-left sm:text-right w-full sm:w-auto">
                     <div className="flex items-center gap-2 mb-1">
-                      <Users className="h-5 w-5 text-blue-400" />
-                      <span className="text-2xl text-slate-100">
+                      <Users className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
+                      <span className="text-xl sm:text-2xl text-slate-100">
                         {presentCount}/{students.length}
                       </span>
                     </div>
@@ -279,30 +279,31 @@ export default function FacultyAttendanceSection() {
                   </div>
                 </div>
 
-                <div className="flex gap-2 mb-4">
+                <div className="flex flex-col sm:flex-row gap-2 mb-4">
                   <Button
                     size="sm"
                     onClick={markAllPresent}
-                    className="bg-green-600 hover:bg-green-700"
+                    className="bg-green-600 hover:bg-green-700 w-full sm:w-auto text-xs sm:text-sm whitespace-nowrap"
                   >
-                    <Users className="h-4 w-4 mr-2" />
+                    <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                     Mark All Present
                   </Button>
                   <Button
                     size="sm"
                     variant="destructive"
                     onClick={() => setShowMassBunkDialog(true)}
+                    className="w-full sm:w-auto text-xs sm:text-sm whitespace-nowrap"
                   >
-                    <UserX className="h-4 w-4 mr-2" />
+                    <UserX className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                     Mass Bunk
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => setShowCancelDialog(true)}
-                    className="border-slate-600 text-slate-300 hover:bg-slate-600"
+                    className="border-slate-600 text-slate-300 hover:bg-slate-600 w-full sm:w-auto text-xs sm:text-sm whitespace-nowrap"
                   >
-                    <XCircle className="h-4 w-4 mr-2" />
+                    <XCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                     Cancel Class
                   </Button>
                 </div>
@@ -311,28 +312,28 @@ export default function FacultyAttendanceSection() {
                   {students.map((student) => (
                     <div
                       key={student.id}
-                      className="flex items-center justify-between p-3 bg-slate-800 rounded-lg hover:bg-slate-750 transition-colors"
+                      className="flex items-center justify-between p-2.5 sm:p-3 bg-slate-800 rounded-lg hover:bg-slate-750 transition-colors gap-2"
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                         <Checkbox
                           checked={attendance[student.id] || false}
                           onCheckedChange={() => toggleAttendance(student.id)}
-                          className="border-slate-500 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+                          className="border-slate-500 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 shrink-0"
                         />
-                        <div>
-                          <p className="text-slate-100">{student.name}</p>
-                          <p className="text-sm text-slate-400">
+                        <div className="min-w-0 flex-1">
+                          <p className="text-slate-100 text-sm sm:text-base truncate">{student.name}</p>
+                          <p className="text-xs sm:text-sm text-slate-400 truncate">
                             Roll No: {student.rollNo}
                           </p>
                         </div>
                       </div>
                       <Badge
                         variant={attendance[student.id] ? "default" : "outline"}
-                        className={
+                        className={`text-xs shrink-0 ${
                           attendance[student.id]
                             ? "bg-green-600 hover:bg-green-700"
                             : "border-slate-600 text-slate-400"
-                        }
+                        }`}
                       >
                         {attendance[student.id] ? "Present" : "Absent"}
                       </Badge>
@@ -342,8 +343,8 @@ export default function FacultyAttendanceSection() {
               </div>
 
               <div className="flex justify-end">
-                <Button onClick={saveAttendance} className="bg-blue-600 hover:bg-blue-700">
-                  <Save className="h-4 w-4 mr-2" />
+                <Button onClick={saveAttendance} className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-xs sm:text-sm">
+                  <Save className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                   Save Attendance
                 </Button>
               </div>
