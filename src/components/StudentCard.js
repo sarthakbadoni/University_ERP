@@ -63,6 +63,8 @@ export default function StudentCard({ student }) {
           <div className="bg-slate-700 text-white rounded px-4 py-2 mb-2">{student.branch}</div>
           <label className="block text-blue-200 font-medium mb-1">Current Semester</label>
           <div className="bg-slate-700 text-white rounded px-4 py-2 mb-2">{student.semester}</div>
+          <label className="block text-blue-200 font-medium mb-1">Section</label>
+          <div className="bg-slate-700 text-white rounded px-4 py-2 mb-2">{student.section}</div>
           <label className="block text-blue-200 font-medium mb-1">Intermediate %</label>
           <div className="bg-slate-700 text-white rounded px-4 py-2">{student.intermediatePercentage}</div>
         </div>

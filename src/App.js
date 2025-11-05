@@ -1,69 +1,73 @@
 import React, { useState } from "react";
 import LoginPage from "./components/LoginPage";
-import Dashboard from "./components/Dashboard";
+import StudentDashboard from "./components/Dashboard";
 import FacultyDashboard from "./components/faculty/FacultyDashboard";
+import AdminDashboard from "./components/admin/AdminDashboard";
+import "./styles/appglobals.css";
 
-// Place all imports at the top of the file!
-
+// Mock data
 const mockStudentData = {
   name: "Arjun Sharma",
-  studentId: "CS21001",
-  universityRollNo: "2021CSE001",
-  classRollNo: "21CSE01",
-  email: "arjun.sharma@university.edu.in",
-  course: "Bachelor of Technology",
-  college: "Institute of Technology and Engineering",
-  specialization: "Computer Science and Engineering",
-  semester: "6th Semester",
-  branch: "Computer Science and Engineering",
-  enrollmentNumber: "EN21001CSE",
-  highschoolPercentage: "92.5%",
-  intermediatePercentage: "88.2%",
-  status: "Active",
+  studentId: "STU2021001",
+  universityRollNo: "21SCSE1234567",
+  classRollNo: "45",
+  email: "arjun.sharma@university.edu",
+  enrollmentNumber: "EN2021001234",
+  course: "B.Tech",
+  branch: "Computer Science Engineering",
+  specialization: "Artificial Intelligence",
+  semester: "6",
+  photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+  highschoolPercentage: "92%",
+  intermediatePercentage: "88%",
   fatherName: "Rajesh Sharma",
   motherName: "Priya Sharma",
-  photo: "https://images.unsplash.com/photo-1585688495161-3235fa75eef0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdHVkZW50JTIwcG9ydHJhaXQlMjB1bml2ZXJzaXR5fGVufDF8fHx8MTc1NzgzNDUxN3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+  section: "A",
 };
 
 const mockFacultyData = {
-  name: "Dr. Faculty",
-  facultyId: "FAC10001",
-  department: "CSE",
-  email: "faculty@university.edu.in",
-  photo: "https://ui-avatars.com/api/?name=Dr+Faculty"
+  userId: "FAC001",
+  name: "Dr. John Smith",
+  email: "john.smith@university.edu",
+  phone: "+1 (555) 123-4567",
+  department: "Computer Science",
+  designation: "Associate Professor",
+  qualification: "Ph.D. in Computer Science",
+  experience: "12 years",
 };
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userType, setUserType] = useState(null); // "student" or "faculty"
-  const [userData, setUserData] = useState({});
+  const [user, setUser] = useState(null);
 
-  const handleLogin = ({ type, data }) => {
-    // Demo: Always use mock data!
-    if (type === "student") {
-      setUserData(mockStudentData);
-    } else if (type === "faculty") {
-      setUserData(mockFacultyData);
-    }
-    setUserType(type);
-    setIsLoggedIn(true);
+  const handleLogin = (userData) => {
+    setUser(userData);
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserType(null);
-    setUserData({});
+    setUser(null);
   };
 
-  return (
-    <div className="size-full dark">
-      {!isLoggedIn ? (
-        <LoginPage onLogin={handleLogin} />
-      ) : userType === "student" ? (
-        <Dashboard studentData={userData} onLogout={handleLogout} />
-      ) : (
-        <FacultyDashboard facultyData={userData} onLogout={handleLogout} />
-      )}
-    </div>
-  );
+  if (!user) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
+  if (user.type === "student") {
+    return (
+      <StudentDashboard studentData={mockStudentData} onLogout={handleLogout} />
+    );
+  }
+
+  if (user.type === "faculty") {
+    return (
+      <FacultyDashboard facultyData={mockFacultyData} onLogout={handleLogout} />
+    );
+  }
+
+  if (user.type === "admin") {
+    return (
+      <AdminDashboard onLogout={handleLogout} />
+    );
+  }
+
+  return null;
 }

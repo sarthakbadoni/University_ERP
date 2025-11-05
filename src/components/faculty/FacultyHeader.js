@@ -1,24 +1,93 @@
 import React from "react";
+import { Menu, LogOut, Bell } from "lucide-react";
+import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Badge } from "../ui/badge";
 
-export default function FacultyHeader({ facultyName, onLogout, onMenuClick }) {
+export default function FacultyHeader({
+  facultyName,
+  onLogout,
+  onMenuClick,
+  onNotificationClick,
+}) {
+  const getInitials = (name) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   return (
-    <header className="w-full bg-gradient-to-r from-blue-800 to-indigo-700 px-3 py-3 flex items-center justify-between shadow-md z-20">
-      <div className="flex items-center gap-2 min-w-0">
-        <button className="md:hidden bg-indigo-600 hover:bg-indigo-500 p-2 rounded text-white mr-1 flex-shrink-0"
+    <header className="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-lg">
+      <div className="flex items-center gap-3">
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={onMenuClick}
-          aria-label="Open navigation">
-          <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-        </button>
-        <span className="font-bold text-base md:text-lg text-white leading-tight truncate">Faculty Portal</span>
+          className="md:hidden text-white hover:bg-slate-700"
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
+        <div>
+          <h1 className="text-white text-lg">Faculty Portal</h1>
+          <p className="text-slate-400 text-xs hidden sm:block">
+            Education Management System
+          </p>
+        </div>
       </div>
-      <div>
-        <span className="font-semibold text-white text-xs md:text-sm truncate">{facultyName}</span>
-        <button onClick={onLogout}
-          className="ml-1 md:ml-2 bg-white text-blue-700 py-1 px-3 md:px-4 rounded font-semibold hover:bg-blue-50 transition text-xs md:text-sm whitespace-nowrap min-w-max">
-          Logout
-        </button>
+
+      <div className="flex items-center gap-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onNotificationClick}
+          className="text-white hover:bg-slate-700 relative"
+        >
+          <Bell className="h-5 w-5" />
+          <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
+            3
+          </Badge>
+        </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 text-white hover:bg-slate-700"
+            >
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-blue-600 text-white text-xs">
+                  {getInitials(facultyName)}
+                </AvatarFallback>
+              </Avatar>
+              <span className="hidden sm:inline">{facultyName}</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem onClick={onLogout} className="text-red-600 cursor-pointer">
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onLogout}
+          className="text-red-400 hover:bg-red-500/10 hover:text-red-300 hidden md:flex"
+          title="Logout"
+        >
+          <LogOut className="h-5 w-5" />
+        </Button>
       </div>
     </header>
   );
