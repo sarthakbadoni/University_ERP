@@ -4,12 +4,15 @@ import Sidebar from "./Sidebar";
 import BottomNavigation from "./BottomNavigation";
 import StudentCard from "./StudentCard";
 import AcademicSection from "./sections/AcademicSection";
-import FeeSection from "./sections/FeeSection";
 import CircularSection from "./sections/CircularSection";
 import ExamSection from "./sections/ExamSection";
-import PlacementSection from "./sections/PlacementSection";
+import FeeSection from "./sections/FeeSection";
 import HostelSection from "./sections/HostelSection";
+import PlacementSection from "./sections/PlacementSection";
 import GrievanceSection from "./sections/GrievanceSection";
+import FeedbackSection from "./sections/FeedbackSection";
+import ResourceSection from "./sections/ResourceSection";
+import PopupCircular from "./PopupCircular";
 
 export default function Dashboard({ studentData, onLogout }) {
   const [activeSection, setActiveSection] = useState("dashboard");
@@ -36,6 +39,10 @@ export default function Dashboard({ studentData, onLogout }) {
         return <HostelSection />;
       case "grievance":
         return <GrievanceSection />;
+      case "feedback":
+        return <FeedbackSection />;
+      case "resources":
+        return <ResourceSection />;
       default:
         return <div>Section not found.</div>;
     }
@@ -43,6 +50,7 @@ export default function Dashboard({ studentData, onLogout }) {
 
   return (
     <div className="bg-slate-900 min-h-screen flex flex-col">
+      <PopupCircular userType="student" />
       <Header
         studentName={studentData?.name}
         studentPhoto={studentData?.photo}

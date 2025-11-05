@@ -8,6 +8,8 @@ import {
   Building,
   BedSingle,
   MessageSquare,
+  Star,
+  FolderOpen,
   X,
 } from "lucide-react";
 
@@ -20,6 +22,8 @@ const sections = [
   { id: "placement", label: "Placement", icon: Building },
   { id: "hostel", label: "Hostel", icon: BedSingle },
   { id: "grievance", label: "Grievance", icon: MessageSquare },
+  { id: "feedback", label: "Feedback", icon: Star },
+  { id: "resources", label: "Resources", icon: FolderOpen },
 ];
 
 export default function Sidebar({ activeSection, onSectionChange, isOpen, onClose }) {
