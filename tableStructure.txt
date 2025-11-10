@@ -1,0 +1,91 @@
+Student-
+{
+    Name:
+    StudentID:
+    UniRollNo:
+    ClassRollNo:
+    OfficialEmail:
+    EnrollmentNo:
+    CourseName:
+    CourseID:
+    Branch:
+    Specialization:
+    CurrentSem:
+    Section:
+    HighSchool:
+    Intermediate:
+    FatherName:
+    MotherName:
+    GuardianPhoneNo:
+    PersonalEmail:
+    StudentPhoneNo:
+}
+
+CourseDetails -
+{
+    CourseID:
+    CourseName:
+    Sem:
+    Subjects: {Branch:
+                {Specialization:{
+                        SubjectCode:  ,SubjectName:  ,Credits:  ,Type:"lab/Theory",
+                        SubjectCode:  ,SubjectName:  ,Credits:  ,Type:"lab/Theory"
+                        .
+                        .
+                        }
+                    .
+                    .
+                }
+                .
+                .
+                .
+              }
+}
+
+
+
+Attendance-
+{
+    StudentID:
+    Date:
+    TimeStamp:
+    CourseID:
+    Sem:
+    Branch:
+    Specialization:
+    Attendance: {subject : "present/absent",
+                .
+                .
+                }
+}
+
+
+
+
+FeesStructure-
+{
+    CourseID:
+    Branch:
+    Specialization:
+    Sem:
+    FeeDetails: {
+        TutionFee:
+        OtherFees:
+        TotalAmount:
+        DueDate:
+    }
+}
+
+
+
+FeesPaid-
+{
+    StudentID:
+    Sem:
+    TotalAmount:
+    Status:
+    CourseID:
+    CourseName:
+    Branch:
+    Specialization
+}
